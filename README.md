@@ -5,8 +5,8 @@
 
 | Service | Port | Description |
 |---|---|---|
-| `customers_api` | `8080` | Customer management |
-| `transactional_api` | `8081` | Accounts & movements |
+| `customersapi` | `8080` | Customer management |
+| `transactionalapi` | `8081` | Accounts & movements |
 | `postgres` | `5432` | PostgreSQL database |
 
 
