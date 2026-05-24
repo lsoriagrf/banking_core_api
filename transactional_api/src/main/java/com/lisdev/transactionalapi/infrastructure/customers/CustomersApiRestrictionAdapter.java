@@ -1,7 +1,7 @@
 package com.lisdev.transactionalapi.infrastructure.customers;
 
-import com.lisdev.transactionalapi.domain.Messages;
 import com.lisdev.transactionalapi.application.port.out.CustomerPort;
+import com.lisdev.transactionalapi.infrastructure.config.CustomersApiProperties;
 import com.lisdev.transactionalapi.domain.model.CustomerIdentityOutcome;
 import java.net.URI;
 import java.util.function.Function;
@@ -18,16 +18,20 @@ public class CustomersApiRestrictionAdapter implements CustomerPort {
     private static final CustomerIdentityOutcome NOT_FOUND = new CustomerIdentityOutcome("", "");
 
     private final WebClient customersWebClient;
+    private final CustomersApiProperties customersApiProperties;
 
-    public CustomersApiRestrictionAdapter(@Qualifier("customersWebClient") WebClient customersWebClient) {
+    public CustomersApiRestrictionAdapter(
+            @Qualifier("customersWebClient") WebClient customersWebClient,
+            CustomersApiProperties customersApiProperties) {
         this.customersWebClient = customersWebClient;
+        this.customersApiProperties = customersApiProperties;
     }
 
     @Override
     public Mono<Integer> findIdByIdentification(String identification) {
         return get(
                 uriBuilder -> uriBuilder
-                        .path(Messages.GET_CUSTOMER_ID_BY_IDENTIFICATION)
+                        .path(customersApiProperties.getFindByIdentificationPath())
                         .queryParam("identification", identification)
                         .build(),
                 CustomerApiDto.class)
@@ -39,7 +43,7 @@ public class CustomersApiRestrictionAdapter implements CustomerPort {
     public Mono<CustomerIdentityOutcome> resolveCustomerIdentityById(Integer customerId) {
         return get(
                         uriBuilder -> uriBuilder
-                                .path(Messages.GET_CUSTOMER_RESOLVE_BY_ID)
+                                .path(customersApiProperties.getGetCustomerByIdPath())
                                 .queryParam("id", customerId)
                                 .build(),
                         CustomerIdentityApiDto.class)

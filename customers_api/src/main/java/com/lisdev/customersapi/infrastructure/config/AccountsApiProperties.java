@@ -10,5 +10,6 @@ import lombok.Setter;
 public class AccountsApiProperties {
 
     private String baseUrl;
+    private String existsActiveAccountsPath;
 
 }

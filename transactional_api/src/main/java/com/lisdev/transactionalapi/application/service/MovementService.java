@@ -13,7 +13,6 @@ import com.lisdev.transactionalapi.domain.model.Account;
 import com.lisdev.transactionalapi.domain.model.Movement;
 import com.lisdev.transactionalapi.domain.model.MovementType;
 import java.math.BigDecimal;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -54,7 +53,7 @@ public class MovementService implements MovementPortIn {
     }
 
     private Mono<Movement> executeWithdrawal(TransactionCommand body, Account account) {
-        BigDecimal balance = Objects.requireNonNullElse(account.getBalance(), BigDecimal.ZERO);
+        BigDecimal balance = account.getBalance();
         BigDecimal amount = body.getAmount();
         if (!hasAvailableBalance(balance, amount)) {
             return Mono.error(new InsufficientFundsException(body.getAccountNumber(), balance, amount));
@@ -64,8 +63,7 @@ public class MovementService implements MovementPortIn {
     }
 
     private Mono<Movement> executeDeposit(TransactionCommand body, Account account) {
-        BigDecimal newBalance =
-                Objects.requireNonNullElse(account.getBalance(), BigDecimal.ZERO).add(body.getAmount());
+        BigDecimal newBalance = account.getBalance().add(body.getAmount());
         return persistAccountMovement(body, account, MovementType.Deposit, newBalance);
     }
 

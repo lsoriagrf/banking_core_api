@@ -8,7 +8,9 @@ import lombok.Setter;
 @Setter
 @ConfigurationProperties(prefix = "app.customers-api")
 public class CustomersApiProperties {
-	
+
 	private String baseUrl;
-	
+	private String findByIdentificationPath;
+	private String getCustomerByIdPath;
+
 }

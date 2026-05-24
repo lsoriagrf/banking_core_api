@@ -11,7 +11,7 @@ public interface CustomerPort {
     Mono<Integer> findIdByIdentification(String identification);
 
     /**
-     * {@code GET /api/v1/customers/resolve?id=:customerId}. Returns {@link CustomerIdentityOutcome#identification()} and
+     * {@code GET /api/v1/customers/by-id?id=:customerId}. Returns {@link CustomerIdentityOutcome#identification()} and
      * {@link CustomerIdentityOutcome#fullName()} from the body;
      */
     Mono<CustomerIdentityOutcome> resolveCustomerIdentityById(Integer customerId);

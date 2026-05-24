@@ -1,27 +1,43 @@
 package com.lisdev.customersapi.application.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import com.lisdev.customersapi.application.port.in.command.CreateCustomerCommand;
 import com.lisdev.customersapi.application.port.in.command.UpdateCustomerCommand;
 import com.lisdev.customersapi.domain.model.Customer;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface CustomerMapper {
+@Component
+public class CustomerMapper {
 
-    @Mapping(target = "status", constant = "true")
-    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "createdBy", source = "identification")
-    Customer toCustomer(CreateCustomerCommand command);
+    public Customer toCustomer(CreateCustomerCommand command) {
+        return Customer.createNew(
+                command.identification(),
+                command.firstName(),
+                command.lastName(),
+                command.gender(),
+                command.birthdate(),
+                command.address(),
+                command.phoneNumber());
+    }
 
-    @Mapping(target = "updatedBy", source = "identification")
-    @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
-    void updateEntity(UpdateCustomerCommand command, @MappingTarget Customer customer);
+    public void updateEntity(UpdateCustomerCommand command, Customer customer) {
+        customer.update(
+                command.identification(),
+                command.firstName(),
+                command.lastName(),
+                command.gender(),
+                command.birthdate(),
+                command.address(),
+                command.phoneNumber());
+    }
 
-    @Mapping(target = "status", constant = "true")
-    @Mapping(target = "updatedAt", expression = "java(java.time.LocalDateTime.now())")
-    @Mapping(target = "updatedBy", source = "identification")
-    void restoreEntity(CreateCustomerCommand command, @MappingTarget Customer customer);
-
+    public void restoreEntity(CreateCustomerCommand command, Customer customer) {
+        customer.restore(
+                command.identification(),
+                command.firstName(),
+                command.lastName(),
+                command.gender(),
+                command.birthdate(),
+                command.address(),
+                command.phoneNumber());
+    }
 }

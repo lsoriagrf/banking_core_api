@@ -17,7 +17,10 @@ cp .env.example .env
 |---|---|---|
 | `SECRET_CONFIG_DB_USERNAME` | Database user | `admin` |
 | `SECRET_CONFIG_DB_PASSWORD` | Database password | `admin123` |
-| `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/customers_db` |
+| `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/dbname` |
+| `CONFIG_HTTP_HTTPS_PORT` | HTTP server port | `8080` |
+| `TRANSACTIONAL_API_BASE_URL` | Transactional API base URL | `http://localhost:8081` |
+| `TRANSACTIONAL_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check active accounts by customer id | `/api/v1/accounts/exists?customerId={customerId}` |
 
 ## Running Tests
 ```bash
@@ -28,7 +31,9 @@ mvn test
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/v1/customers` | Get all customers |
+| `GET` | `/api/v1/customers?identification=` | Get customer id by identification |
+| `GET` | `/api/v1/customers/by-id?id=` | Get customer identification and full name by id |
+| `GET` | `/api/v1/customers/{identification}` | Get customer by identification |
 | `POST` | `/api/v1/customers` | Create customer |
 | `PUT` | `/api/v1/customers/{id}` | Update customer |
 | `DELETE` | `/api/v1/customers/{id}` | Delete customer |

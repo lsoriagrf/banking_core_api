@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public abstract class Person {
+public class Person {
 
     @NotBlank(message = "Client identification is required")
     @Size(max = 15, message = "Identification must not exceed 15 characters")

@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class CreateCustomer extends Person {
 
-    @NotBlank(message = "The client password is required")
+    @NotBlank(message = "The customer password is required")
     private String password;
 
 }

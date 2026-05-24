@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lisdev.customersapi.application.port.in.CustomerPortIn;
 import com.lisdev.customersapi.common.WebAdapter;
 import com.lisdev.customersapi.infrastructure.web.dto.request.CreateCustomer;
-import com.lisdev.customersapi.infrastructure.web.dto.request.UpdateCustomer;
+import com.lisdev.customersapi.infrastructure.web.dto.request.Person;
 import com.lisdev.customersapi.infrastructure.web.dto.response.CustomerResolvedResponse;
 import com.lisdev.customersapi.infrastructure.web.dto.response.CustomerIdResponse;
 import com.lisdev.customersapi.infrastructure.web.dto.response.CustomerResponse;
@@ -42,9 +42,9 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public Mono<ResponseEntity<CustomerResponse>> updateCustomer(
-            @PathVariable String id,
-            @Valid @RequestBody UpdateCustomer body) {
-        return customerPortIn.updateCustomer(customerWebMapper.toUpdateCommand(body))
+            @PathVariable Integer id,
+            @Valid @RequestBody Person body) {
+        return customerPortIn.updateCustomer(id, customerWebMapper.toUpdateCommand(body))
                 .map(customerWebMapper::toResponse)
                 .map(ResponseEntity::ok);
     }
@@ -73,7 +73,7 @@ public class CustomerController {
     }
 
     // Gets active customer identification and full name by id.
-    @GetMapping("/resolve")
+    @GetMapping("/by-id")
     public Mono<ResponseEntity<CustomerResolvedResponse>> findActiveCustomerIdentificationAndFullNameById(
             @RequestParam Integer id) {
         return customerPortIn.findActiveCustomerIdentificationAndFullNameById(id)

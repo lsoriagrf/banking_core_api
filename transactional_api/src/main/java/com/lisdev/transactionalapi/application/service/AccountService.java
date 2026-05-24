@@ -1,9 +1,7 @@
 package com.lisdev.transactionalapi.application.service;
 
 import com.lisdev.transactionalapi.domain.Messages;
-import com.lisdev.transactionalapi.domain.exception.AccountHasBalanceException;
 import com.lisdev.transactionalapi.domain.exception.AccountNotFoundException;
-import com.lisdev.transactionalapi.domain.exception.AccountStatusException;
 import com.lisdev.transactionalapi.domain.exception.CustomerNotFoundException;
 import com.lisdev.transactionalapi.application.mapper.AccountMapper;
 import com.lisdev.transactionalapi.application.port.in.AccountPortIn;
@@ -13,9 +11,6 @@ import com.lisdev.transactionalapi.application.port.out.AccountPersistencePort;
 import com.lisdev.transactionalapi.application.port.out.CustomerPort;
 import com.lisdev.transactionalapi.common.UseCase;
 import com.lisdev.transactionalapi.domain.model.Account;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -59,18 +54,7 @@ public class AccountService implements AccountPortIn {
                 .findAccountById(id)
                 .switchIfEmpty(Mono.error(new AccountNotFoundException()))
                 .flatMap(account -> {
-                    if (Objects.equals(account.getStatus(), status)) {
-                        return Mono.error(AccountStatusException.redundantWithRequestedState(status));
-                    }
-                    if (Boolean.FALSE.equals(status)) {
-                        BigDecimal balance = account.getBalance();
-                        if (balance != null && balance.compareTo(BigDecimal.ZERO) > 0) {
-                            return Mono.error(new AccountHasBalanceException());
-                        }
-                    }
-                    account.setStatus(status);
-                    account.setUpdatedBy(account.getCreatedBy());
-                    account.setUpdatedAt(LocalDateTime.now());
+                    account.updateStatus(status);
                     return accountPersistencePort.save(account);
                 })
                 .doOnNext(account -> log.info(Messages.END + "updateAccountStatus(id:{})", account.getId()));

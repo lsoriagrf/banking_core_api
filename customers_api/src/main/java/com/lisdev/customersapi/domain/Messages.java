@@ -16,6 +16,4 @@ public final class Messages {
     public static final String ACTIVE_ACCOUNT = "Customer has active account(s) and cannot be deleted";
     public static final String DB_NOT_AVAILABLE = "The database is not available";
     public static final String DOWNSTREAM_SERVICE_NO_RESPONSE = "Error, please try again later";
-
-    public static final String HAS_ACTIVE_ACCOUNTS_PATH = "/api/v1/accounts/exists?customerId={customerId}";
 }

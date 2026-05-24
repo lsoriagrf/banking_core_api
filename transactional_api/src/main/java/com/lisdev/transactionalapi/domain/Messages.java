@@ -15,7 +15,4 @@ public class Messages {
     public static final String ACCOUNT_ALREADY_INACTIVE = "The account is already inactive.";
     public static final String ACCOUNT_HAS_BALANCE = "Account cannot be deactivated because it has a balance";
 
-    public static final String GET_CUSTOMER_ID_BY_IDENTIFICATION = "/api/v1/customers";
-    public static final String GET_CUSTOMER_RESOLVE_BY_ID = "/api/v1/customers/resolve";
-
 }

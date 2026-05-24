@@ -34,43 +34,14 @@ class MovementTest {
     private static final String ACCOUNT_MISSING = "999";
     private static final BigDecimal BASE_BALANCE = new BigDecimal("1000.00");
     private static final BigDecimal WITHDRAW_AMT = new BigDecimal("200.00");
+    private static final BigDecimal DEPOSIT_AMT  = new BigDecimal("150.00");
 
     @Mock private AccountPersistencePort  accountPersistencePort;
     @Mock private MovementPersistencePort  movementPersistencePort;
     @Mock private MovementMapper            movementMapper;
     @InjectMocks private MovementService   movementService;
 
-    // ── helpers ──────────────────────────────────────────────────────────
-
-    private TransactionCommand withdrawalCmd(String acct, BigDecimal amt) {
-        TransactionCommand c = new TransactionCommand();
-        c.setIdentification("91234326");
-        c.setAccountNumber(acct);
-        c.setAmount(amt);
-        return c;
-    }
-
-    private Account activeAccount(String acct, BigDecimal balance) {
-        Account a = new Account();
-        a.setId(1); a.setAccountNumber(acct);
-        a.setBalance(balance); a.setStatus(Boolean.TRUE);
-        return a;
-    }
-
-    private Movement withdrawalMovement(BigDecimal amount, BigDecimal balance) {
-        Movement m = new Movement();
-        m.setId(10); m.setAccountId(1);
-        m.setTransactionTypeId(MovementType.Withdrawal.getId());
-        m.setTransactionCode(UUID.randomUUID());
-        m.setAmount(amount); m.setBalance(balance);
-        return m;
-    }
-
-    private static String insufficientMsg(String acct, BigDecimal bal, BigDecimal amt) {
-        return new InsufficientFundsException(acct, bal, amt).getMessage();
-    }
-
-    // ── tests ─────────────────────────────────────────────────────────────
+    // ── withdrawal ────────────────────────────────────────────────────────
 
     @Test
     void withdrawal_accountNotFound_throwsException() {
@@ -110,10 +81,10 @@ class MovementTest {
 
     @Test
     void withdrawal_success_updatesBalanceAndPersistsMovement() {
-        Account account            = activeAccount(ACCOUNT_001, BASE_BALANCE);
+        Account account = activeAccount(ACCOUNT_001, BASE_BALANCE);
         BigDecimal expectedBalance = BASE_BALANCE.subtract(WITHDRAW_AMT);
-        TransactionCommand cmd     = withdrawalCmd(ACCOUNT_001, WITHDRAW_AMT);
-        Movement expected          = withdrawalMovement(WITHDRAW_AMT, expectedBalance);
+        TransactionCommand cmd = withdrawalCmd(ACCOUNT_001, WITHDRAW_AMT);
+        Movement expected = withdrawalMovement(WITHDRAW_AMT, expectedBalance);
 
         when(accountPersistencePort.findActiveAccountByAccountNumber(ACCOUNT_001))
                 .thenReturn(Mono.just(account));
@@ -135,5 +106,116 @@ class MovementTest {
         verify(accountPersistencePort).findActiveAccountByAccountNumber(ACCOUNT_001);
         verify(accountPersistencePort).save(account);
         verify(movementPersistencePort).save(expected);
+    }
+
+    // ── deposit ───────────────────────────────────────────────────────────
+
+    @Test
+    void deposit_shouldFail_whenAccountNotFound() {
+        TransactionCommand cmd = depositCmd(ACCOUNT_MISSING, DEPOSIT_AMT);
+        when(accountPersistencePort.findActiveAccountByAccountNumber(ACCOUNT_MISSING))
+                .thenReturn(Mono.empty());
+
+        StepVerifier.create(movementService.deposit(cmd))
+                .expectErrorSatisfies(e -> {
+                    assertInstanceOf(AccountNotFoundException.class, e);
+                    assertEquals(Messages.ACCOUNT_NOT_FOUND, e.getMessage());
+                }).verify();
+
+        verify(accountPersistencePort, never()).save(any());
+        verify(movementPersistencePort, never()).save(any());
+    }
+
+    @Test
+    void deposit_shouldIncreaseBalance_withCorrectCalculation() {
+        Account account = activeAccount(ACCOUNT_001, BASE_BALANCE);
+        BigDecimal expectedBalance = BASE_BALANCE.add(DEPOSIT_AMT);
+        TransactionCommand cmd = depositCmd(ACCOUNT_001, DEPOSIT_AMT);
+        Movement expected = depositMovement(DEPOSIT_AMT, expectedBalance);
+
+        when(accountPersistencePort.findActiveAccountByAccountNumber(ACCOUNT_001))
+                .thenReturn(Mono.just(account));
+        when(accountPersistencePort.save(account))
+                .thenAnswer(inv -> Mono.just(inv.getArgument(0)));
+        when(movementMapper.toNewMovement(eq(cmd), eq(account.getId()),
+                eq(expectedBalance), eq(MovementType.Deposit.getId()),
+                eq(MovementType.Deposit.getDescription())))
+                .thenReturn(expected);
+        when(movementPersistencePort.save(expected))
+                .thenReturn(Mono.just(expected));
+
+        StepVerifier.create(movementService.deposit(cmd))
+                .expectNext(expected)
+                .verifyComplete();
+
+        assertEquals(expectedBalance, account.getBalance());
+        assertEquals(cmd.getIdentification(), account.getUpdatedBy());
+        verify(accountPersistencePort).save(account);
+        verify(movementPersistencePort).save(expected);
+    }
+
+    @Test
+    void deposit_shouldSucceed_whenAmountEqualsBalance() {
+        Account account            = activeAccount(ACCOUNT_001, BASE_BALANCE);
+        BigDecimal expectedBalance = BASE_BALANCE.add(BASE_BALANCE);
+        TransactionCommand cmd     = depositCmd(ACCOUNT_001, BASE_BALANCE);
+        Movement expected          = depositMovement(BASE_BALANCE, expectedBalance);
+
+        when(accountPersistencePort.findActiveAccountByAccountNumber(ACCOUNT_001))
+                .thenReturn(Mono.just(account));
+        when(accountPersistencePort.save(account))
+                .thenAnswer(inv -> Mono.just(inv.getArgument(0)));
+        when(movementMapper.toNewMovement(eq(cmd), eq(account.getId()),
+                eq(expectedBalance), eq(MovementType.Deposit.getId()),
+                eq(MovementType.Deposit.getDescription())))
+                .thenReturn(expected);
+        when(movementPersistencePort.save(expected))
+                .thenReturn(Mono.just(expected));
+
+        StepVerifier.create(movementService.deposit(cmd))
+                .expectNext(expected)
+                .verifyComplete();
+
+        assertEquals(expectedBalance, account.getBalance());
+        verify(accountPersistencePort).save(account);
+        verify(movementPersistencePort).save(expected);
+    }
+    
+ // ── helpers ──────────────────────────────────────────────────────────
+
+    private TransactionCommand withdrawalCmd(String acct, BigDecimal amt) {
+        TransactionCommand c = new TransactionCommand();
+        c.setIdentification("91234326");
+        c.setAccountNumber(acct);
+        c.setAmount(amt);
+        return c;
+    }
+
+    private TransactionCommand depositCmd(String acct, BigDecimal amt) {
+        TransactionCommand c = new TransactionCommand();
+        c.setIdentification("91234326");
+        c.setAccountNumber(acct);
+        c.setAmount(amt);
+        return c;
+    }
+
+    private Account activeAccount(String acct, BigDecimal balance) {
+        return Account.rehydrate(1, acct, null, null, null, balance, Boolean.TRUE, null, null, null, null);
+    }
+
+    private Movement withdrawalMovement(BigDecimal amount, BigDecimal balance) {
+        return movementOf(MovementType.Withdrawal, amount, balance);
+    }
+
+    private Movement depositMovement(BigDecimal amount, BigDecimal balance) {
+        return movementOf(MovementType.Deposit, amount, balance);
+    }
+
+    private Movement movementOf(MovementType type, BigDecimal amount, BigDecimal balance) {
+        return Movement.rehydrate(10, 1, type.getId(), UUID.randomUUID(), amount, balance, null, null, null);
+    }
+
+    private static String insufficientMsg(String acct, BigDecimal bal, BigDecimal amt) {
+        return new InsufficientFundsException(acct, bal, amt).getMessage();
     }
 }

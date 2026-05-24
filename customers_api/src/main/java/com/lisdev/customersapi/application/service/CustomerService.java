@@ -1,6 +1,5 @@
 package com.lisdev.customersapi.application.service;
 
-import java.time.LocalDateTime;
 import com.lisdev.customersapi.domain.exception.ActiveAccountException;
 import com.lisdev.customersapi.domain.exception.CustomerAlreadyActiveException;
 import com.lisdev.customersapi.domain.exception.CustomerNotFoundException;
@@ -43,12 +42,12 @@ public class CustomerService implements CustomerPortIn {
                         customerPersistencePort.findDeletedCustomerByIdentification(command.identification())
                                 .flatMap(deleted -> {
                                     customerMapper.restoreEntity(command, deleted);
-                                    deleted.setPassword(passwordEncoderPort.encode(command.password()));
+                                    deleted.assignEncodedPassword(passwordEncoderPort.encode(command.password()));
                                     return customerPersistencePort.save(deleted);
                                 })
                                 .switchIfEmpty(Mono.<Customer>defer(() -> {
                                     Customer customer = customerMapper.toCustomer(command);
-                                    customer.setPassword(passwordEncoderPort.encode(command.password()));
+                                    customer.assignEncodedPassword(passwordEncoderPort.encode(command.password()));
                                     return customerPersistencePort.save(customer);
                                 })))
                 .doOnNext(customer -> log.info(Messages.END + "createCustomer(identification:{})",
@@ -56,10 +55,10 @@ public class CustomerService implements CustomerPortIn {
     }
 
     @Override
-    public Mono<Customer> updateCustomer(UpdateCustomerCommand command) {
-        log.info(Messages.START + "updateCustomer(identification:{})", command.identification());
-        return customerPersistencePort.findActiveCustomerById(command.id())
-                .switchIfEmpty(Mono.error(new CustomerNotFoundException(command.id())))
+    public Mono<Customer> updateCustomer(Integer id, UpdateCustomerCommand command) {
+        log.info(Messages.START + "updateCustomer(id:{}, identification:{})", id, command.identification());
+        return customerPersistencePort.findActiveCustomerById(id)
+                .switchIfEmpty(Mono.error(new CustomerNotFoundException(id)))
                 .flatMap(customer -> {
                     customerMapper.updateEntity(command, customer);
                     return customerPersistencePort.save(customer);
@@ -110,9 +109,7 @@ public class CustomerService implements CustomerPortIn {
                                 ? Mono.<Customer>error(new ActiveAccountException())
                                 : Mono.just(customer)))
                 .flatMap(customer -> {
-                    customer.setStatus(false);
-                    customer.setUpdatedBy(customer.getCreatedBy());
-                    customer.setUpdatedAt(LocalDateTime.now());
+                    customer.deactivate();
                     return customerPersistencePort.save(customer);
                 })
                 .flatMap(saved -> customerAuditPersistencePort

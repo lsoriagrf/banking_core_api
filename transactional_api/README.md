@@ -17,7 +17,11 @@ cp .env.example .env
 |---|---|---|
 | `SECRET_CONFIG_DB_USERNAME` | Database user | `admin` |
 | `SECRET_CONFIG_DB_PASSWORD` | Database password | `admin123` |
-| `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/transactions_db` |
+| `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/dbname` |
+| `CONFIG_HTTP_HTTPS_PORT` | HTTP server port | `8081` |
+| `CUSTOMERS_API_BASE_URL` | Customers API base URL | `http://localhost:8080` |
+| `CUSTOMERS_API_FIND_BY_IDENTIFICATION_PATH` | Return `{ id }` | `/api/v1/customers` |
+| `CUSTOMERS_API_GET_CUSTOMER_BY_ID_PATH` | Return `{ identification, fullName }` | `/api/v1/customers/by-id` |
 
 ## Running Tests
 ```bash
@@ -26,7 +30,7 @@ mvn test
 
 ## API documentation
 
-With the app running on port **8080**.
+With the app running on port **8081**.
 
 | Resource | URL |
 | --- | --- |

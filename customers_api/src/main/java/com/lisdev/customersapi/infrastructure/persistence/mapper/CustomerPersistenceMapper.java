@@ -7,7 +7,23 @@ import com.lisdev.customersapi.infrastructure.persistence.entity.CustomerEntity;
 @Mapper(componentModel = "spring")
 public interface CustomerPersistenceMapper {
 
-    Customer toDomain(CustomerEntity entity);
+    default Customer toDomain(CustomerEntity entity) {
+        return Customer.rehydrate(
+                entity.getId(),
+                entity.getIdentification(),
+                entity.getFirstName(),
+                entity.getLastName(),
+                entity.getPassword(),
+                entity.getGender(),
+                entity.getBirthdate(),
+                entity.getAddress(),
+                entity.getPhoneNumber(),
+                entity.getStatus(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                entity.getCreatedBy(),
+                entity.getUpdatedBy());
+    }
 
     CustomerEntity toEntity(Customer customer);
 

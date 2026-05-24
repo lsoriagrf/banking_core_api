@@ -6,7 +6,7 @@ import com.lisdev.customersapi.application.port.in.command.UpdateCustomerCommand
 import com.lisdev.customersapi.domain.model.ResolvedActiveCustomer;
 import com.lisdev.customersapi.domain.model.Customer;
 import com.lisdev.customersapi.infrastructure.web.dto.request.CreateCustomer;
-import com.lisdev.customersapi.infrastructure.web.dto.request.UpdateCustomer;
+import com.lisdev.customersapi.infrastructure.web.dto.request.Person;
 import com.lisdev.customersapi.infrastructure.web.dto.response.CustomerResolvedResponse;
 import com.lisdev.customersapi.infrastructure.web.dto.response.CustomerResponse;
 
@@ -15,7 +15,7 @@ public interface CustomerWebMapper {
 
     CreateCustomerCommand toCreateCommand(CreateCustomer dto);
 
-    UpdateCustomerCommand toUpdateCommand(UpdateCustomer dto);
+    UpdateCustomerCommand toUpdateCommand(Person dto);
 
     CustomerResponse toResponse(Customer customer);
 

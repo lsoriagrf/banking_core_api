@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class Movement {
 
     private Integer id;
@@ -19,4 +17,49 @@ public class Movement {
     private String note;
     private LocalDateTime createdAt;
     private String createdBy;
+
+    private Movement() {}
+
+    public static Movement createNew(
+            Integer accountId,
+            Integer transactionTypeId,
+            UUID transactionCode,
+            BigDecimal amount,
+            BigDecimal balance,
+            String note,
+            String createdBy) {
+        Movement movement = new Movement();
+        movement.accountId = accountId;
+        movement.transactionTypeId = transactionTypeId;
+        movement.transactionCode = transactionCode;
+        movement.amount = amount;
+        movement.balance = balance;
+        movement.note = note;
+        movement.createdAt = LocalDateTime.now();
+        movement.createdBy = createdBy;
+        return movement;
+    }
+
+    public static Movement rehydrate(
+            Integer id,
+            Integer accountId,
+            Integer transactionTypeId,
+            UUID transactionCode,
+            BigDecimal amount,
+            BigDecimal balance,
+            String note,
+            LocalDateTime createdAt,
+            String createdBy) {
+        Movement movement = new Movement();
+        movement.id = id;
+        movement.accountId = accountId;
+        movement.transactionTypeId = transactionTypeId;
+        movement.transactionCode = transactionCode;
+        movement.amount = amount;
+        movement.balance = balance;
+        movement.note = note;
+        movement.createdAt = createdAt;
+        movement.createdBy = createdBy;
+        return movement;
+    }
 }
