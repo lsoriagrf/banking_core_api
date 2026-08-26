@@ -170,11 +170,11 @@ class CustomerServiceTest {
     @Test
     @DisplayName("updateCustomer: customer not found → CustomerNotFoundException")
     void updateCustomer_whenNotFound_throwsException() {
-        UpdateCustomerCommand cmd = updateCommand(IDENTIFICATION);
+        UpdateCustomerCommand customerCommand = updateCommand(IDENTIFICATION);
         when(customerPersistencePort.findActiveCustomerById(CUSTOMER_ID))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(customerService.updateCustomer(CUSTOMER_ID, cmd))
+        StepVerifier.create(customerService.updateCustomer(customerCommand))
                 .expectErrorSatisfies(ex -> assertThat(ex)
                         .isInstanceOf(CustomerNotFoundException.class)
                         .hasMessage(Messages.CUSTOMER_ID_NOT_EXIST + CUSTOMER_ID))
@@ -188,7 +188,7 @@ class CustomerServiceTest {
     @Test
     @DisplayName("updateCustomer: customer found → update, save and audit")
     void updateCustomer_whenFound_updatesAndAudits() {
-        UpdateCustomerCommand cmd = updateCommand(IDENTIFICATION);
+        UpdateCustomerCommand customerCommand = updateCommand(IDENTIFICATION);
         Customer existing = customerRehydrated(CUSTOMER_ID, "CREATED_BY", true);
         CustomerAuditSnapshot snapshot = snapshotFor(existing);
 
@@ -214,14 +214,14 @@ class CustomerServiceTest {
         when(customerAuditPersistencePort.save(any(CustomerAuditSnapshot.class)))
                 .thenReturn(Mono.empty());
 
-        StepVerifier.create(customerService.updateCustomer(CUSTOMER_ID, cmd))
+        StepVerifier.create(customerService.updateCustomer(customerCommand))
                 .assertNext(updated -> {
                     assertThat(updated.getIdentification()).isEqualTo(IDENTIFICATION);
                     assertThat(updated.getUpdatedBy()).isEqualTo(IDENTIFICATION);
                 })
                 .verifyComplete();
 
-        verify(customerMapper).updateEntity(cmd, existing);
+        verify(customerMapper).updateEntity(customerCommand, existing);
         verify(customerPersistencePort).save(existing);
         verify(customerAuditMapper).toSnapshot(existing);
         verify(customerAuditPersistencePort).save(snapshot);
@@ -284,7 +284,7 @@ class CustomerServiceTest {
 
     private static UpdateCustomerCommand updateCommand(String identification) {
         return new UpdateCustomerCommand(
-                identification, "Juan", "Pérez", "M",
+                CUSTOMER_ID, identification, "Juan", "Pérez", "M",
                 LocalDate.of(1990, 5, 10), "Av. Principal 123", "0987654321");
     }
 

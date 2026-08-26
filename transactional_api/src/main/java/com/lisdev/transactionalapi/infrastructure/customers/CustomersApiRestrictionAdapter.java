@@ -31,8 +31,8 @@ public class CustomersApiRestrictionAdapter implements CustomerPort {
     public Mono<Integer> findIdByIdentification(String identification) {
         return get(
                 uriBuilder -> uriBuilder
-                        .path(customersApiProperties.getFindByIdentificationPath())
-                        .queryParam("identification", identification)
+                        .path(customersApiProperties.getPath())
+                        .pathSegment(identification)
                         .build(),
                 CustomerApiDto.class)
                 .map(CustomerApiDto::id)
@@ -43,8 +43,8 @@ public class CustomersApiRestrictionAdapter implements CustomerPort {
     public Mono<CustomerIdentityOutcome> resolveCustomerIdentityById(Integer customerId) {
         return get(
                         uriBuilder -> uriBuilder
-                                .path(customersApiProperties.getGetCustomerByIdPath())
-                                .queryParam("id", customerId)
+                                .path(customersApiProperties.getPath())
+                                .pathSegment(String.valueOf(customerId))
                                 .build(),
                         CustomerIdentityApiDto.class)
                 .map(dto -> new CustomerIdentityOutcome(dto.identification(), dto.fullName()))

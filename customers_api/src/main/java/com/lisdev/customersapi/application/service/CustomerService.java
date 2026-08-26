@@ -55,10 +55,11 @@ public class CustomerService implements CustomerPortIn {
     }
 
     @Override
-    public Mono<Customer> updateCustomer(Integer id, UpdateCustomerCommand command) {
-        log.info(Messages.START + "updateCustomer(id:{}, identification:{})", id, command.identification());
-        return customerPersistencePort.findActiveCustomerById(id)
-                .switchIfEmpty(Mono.error(new CustomerNotFoundException(id)))
+    public Mono<Customer> updateCustomer(UpdateCustomerCommand command) {
+        log.info(Messages.START + "updateCustomer(id:{}, identification:{})",
+                command.id(), command.identification());
+        return customerPersistencePort.findActiveCustomerById(command.id())
+                .switchIfEmpty(Mono.error(new CustomerNotFoundException(command.id())))
                 .flatMap(customer -> {
                     customerMapper.updateEntity(command, customer);
                     return customerPersistencePort.save(customer);
@@ -77,16 +78,6 @@ public class CustomerService implements CustomerPortIn {
                 .switchIfEmpty(Mono.error(new CustomerNotFoundException(identification)))
                 .doOnNext(customer -> log.info(Messages.END + "findCustomerByIdentification(identification:{})",
                         customer.getIdentification()));
-    }
-
-    @Override
-    public Mono<Integer> findIdByIdentification(String identification) {
-        log.info(Messages.START + "findIdByIdentification(identification:{})", identification);
-        return customerPersistencePort.findActiveCustomerByIdentification(identification)
-                .switchIfEmpty(Mono.error(new CustomerNotFoundException(identification)))
-                .map(Customer::getId)
-                .doOnNext(id -> log.info(Messages.END + "findIdByIdentification(identification:{}, id:{})",
-                        identification, id));
     }
 
     @Override

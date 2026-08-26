@@ -10,11 +10,9 @@ public interface CustomerPortIn {
 
     Mono<Customer> createCustomer(CreateCustomerCommand command);
 
-    Mono<Customer> updateCustomer(Integer id, UpdateCustomerCommand command);
+    Mono<Customer> updateCustomer(UpdateCustomerCommand command);
 
     Mono<Customer> findCustomerByIdentification(String identification);
-
-    Mono<Integer> findIdByIdentification(String identification);
 
     Mono<Void> deleteCustomer(Integer id);
 

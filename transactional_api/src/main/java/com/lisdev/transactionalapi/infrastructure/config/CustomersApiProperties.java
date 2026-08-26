@@ -10,7 +10,6 @@ import lombok.Setter;
 public class CustomersApiProperties {
 
 	private String baseUrl;
-	private String findByIdentificationPath;
-	private String getCustomerByIdPath;
+	private String path;
 
 }

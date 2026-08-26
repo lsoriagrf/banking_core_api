@@ -31,9 +31,8 @@ mvn test
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/api/v1/customers?identification=` | Get customer id by identification |
-| `GET` | `/api/v1/customers/by-id?id=` | Get customer identification and full name by id |
 | `GET` | `/api/v1/customers/{identification}` | Get customer by identification |
+| `GET` | `/api/v1/customers/{id}` | Get customer identification and full name by id |
 | `POST` | `/api/v1/customers` | Create customer |
 | `PUT` | `/api/v1/customers/{id}` | Update customer |
 | `DELETE` | `/api/v1/customers/{id}` | Delete customer |

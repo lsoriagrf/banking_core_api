@@ -15,7 +15,7 @@ public interface CustomerWebMapper {
 
     CreateCustomerCommand toCreateCommand(CreateCustomer dto);
 
-    UpdateCustomerCommand toUpdateCommand(Person dto);
+    UpdateCustomerCommand toUpdateCommand(Integer id, Person dto);
 
     CustomerResponse toResponse(Customer customer);
 
