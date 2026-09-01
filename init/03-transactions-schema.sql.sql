@@ -1,4 +1,6 @@
-CREATE DATABASE transactions_db;
+-- DDL
+
+\c transactions_db
 
 CREATE TABLE public.account_type (
     id          SERIAL PRIMARY KEY,
@@ -76,7 +78,7 @@ VALUES
 
 INSERT INTO public.account (account_number, customer_id, account_type_id, balance, status, created_at, created_by)
 VALUES
-    ('1234567890', 1, 2, 2000, TRUE, NOW(), 'admin'),
-    ('2345678901', 2, 1,  100, TRUE, NOW(), 'admin'),
-    ('3456789012', 3, 2,    0, TRUE, NOW(), 'admin'),
-    ('4567890123', 2, 2,  540, TRUE, NOW(), 'admin');
+    ('478758', 1, 2, 2000, TRUE, NOW(), 'admin'),
+    ('225487', 2, 1,  100, TRUE, NOW(), 'admin'),
+    ('495878', 3, 2,    0, TRUE, NOW(), 'admin'),
+    ('496825', 2, 2,  540, TRUE, NOW(), 'admin');

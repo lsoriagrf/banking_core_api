@@ -1,6 +1,6 @@
 -- DDL
 
-CREATE DATABASE customers_db;
+\c customers_db
 
 CREATE TABLE public."customer" (
     id          SERIAL PRIMARY KEY,
