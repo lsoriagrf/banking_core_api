@@ -19,10 +19,14 @@ cp .env.example .env
 
 | Variable | Description | Example |
 |---|---|---|
-| `DB_USERNAME` | Database user | `admin` |
-| `DB_PASSWORD` | Database password | `admin123` |
+| `DB_USERNAME` | Database user | `your_db_user` |
+| `DB_PASSWORD` | Database password | `your_db_password` |
 | `CUSTOMERS_DB_URL` | Customers R2DBC URL | `r2dbc:postgresql://db:5432/customers_db` |
 | `TRANSACTIONAL_DB_URL` | Transactions R2DBC URL | `r2dbc:postgresql://db:5432/transactions_db` |
+| `TRANSACTIONAL_API_BASE_URL` | Base URL for the transactional API | `http://transactional-api:8081` |
+| `TRANSACTIONAL_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check if a customer has active accounts | `/api/v1/accounts/exists?customerId={customerId}` |
+| `CUSTOMERS_API_BASE_URL` | Base URL for the customers API | `http://customers-api:8080` |
+| `CUSTOMERS_API_PATH` | Base path for customers endpoints | `/api/v1/customers` |
 
 
 ## Docker Compose
