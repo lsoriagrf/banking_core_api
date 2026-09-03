@@ -19,8 +19,8 @@ cp .env.example .env
 | `SECRET_CONFIG_DB_PASSWORD` | Database password | `admin123` |
 | `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/dbname` |
 | `CONFIG_HTTP_HTTPS_PORT` | HTTP server port | `8080` |
-| `TRANSACTIONAL_API_BASE_URL` | Transactional API base URL | `http://localhost:8081` |
-| `TRANSACTIONAL_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check active accounts by customer id | `/api/v1/accounts/exists?customerId={customerId}` |
+| `ACCOUNT_API_BASE_URL` | Account API base URL | `http://localhost:8081` |
+| `ACCOUNT_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check active accounts by customer id | `/api/v1/accounts/exists?customerId={customerId}` |
 
 ## Running Tests
 ```bash

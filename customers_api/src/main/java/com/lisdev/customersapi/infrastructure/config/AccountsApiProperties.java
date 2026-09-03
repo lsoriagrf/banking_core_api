@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "app.transactional-api")
+@ConfigurationProperties(prefix = "app.account-api")
 public class AccountsApiProperties {
 
     private String baseUrl;

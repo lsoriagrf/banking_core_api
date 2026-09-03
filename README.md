@@ -6,7 +6,7 @@
 | Service | Port | Description |
 |---|---|---|
 | `customersapi` | `8080` | Customer management |
-| `transactionalapi` | `8081` | Accounts & movements |
+| `lsg-msa-account` | `8081` | Accounts & movements |
 | `postgres` | `5432` | PostgreSQL database |
 
 
@@ -22,9 +22,9 @@ cp .env.example .env
 | `DB_USERNAME` | Database user | `your_db_user` |
 | `DB_PASSWORD` | Database password | `your_db_password` |
 | `CUSTOMERS_DB_URL` | Customers R2DBC URL | `r2dbc:postgresql://db:5432/customers_db` |
-| `TRANSACTIONAL_DB_URL` | Transactions R2DBC URL | `r2dbc:postgresql://db:5432/transactions_db` |
-| `TRANSACTIONAL_API_BASE_URL` | Base URL for the transactional API | `http://transactional-api:8081` |
-| `TRANSACTIONAL_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check if a customer has active accounts | `/api/v1/accounts/exists?customerId={customerId}` |
+| `ACCOUNT_DB_URL` | Transactions R2DBC URL | `r2dbc:postgresql://db:5432/transactions_db` |
+| `ACCOUNT_API_BASE_URL` | Base URL for the account API | `http://lsg-msa-account:8081` |
+| `ACCOUNT_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check if a customer has active accounts | `/api/v1/accounts/exists?customerId={customerId}` |
 | `CUSTOMERS_API_BASE_URL` | Base URL for the customers API | `http://customers-api:8080` |
 | `CUSTOMERS_API_PATH` | Base path for customers endpoints | `/api/v1/customers` |
 
