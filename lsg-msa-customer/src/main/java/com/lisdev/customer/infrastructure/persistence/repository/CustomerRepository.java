@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface CustomerRepository extends R2dbcRepository<CustomerEntity, Integer> {
 
-    Mono<CustomerEntity> findByIdentificationAndStatusTrue(String identification);
+    Mono<CustomerEntity> findByPersonIdAndStatusTrue(Integer personId);
 
-    Mono<CustomerEntity> findByIdentificationAndStatusFalse(String identification);
+    Mono<CustomerEntity> findByPersonIdAndStatusFalse(Integer personId);
 
     Mono<CustomerEntity> findByIdAndStatusTrue(int id);
 

@@ -31,6 +31,8 @@ services:
       CONFIG_HTTP_HTTPS_PORT: 8080
       ACCOUNT_API_BASE_URL: ${ACCOUNT_API_BASE_URL}
       ACCOUNT_API_EXISTS_ACTIVE_ACCOUNTS_PATH: ${ACCOUNT_API_EXISTS_ACTIVE_ACCOUNTS_PATH}
+      TZ: America/Guayaquil
+      JAVA_TOOL_OPTIONS: -Duser.timezone=America/Guayaquil
     depends_on:
       db:
         condition: service_healthy
@@ -46,6 +48,8 @@ services:
       CONFIG_HTTP_HTTPS_PORT: 8081
       CUSTOMER_API_BASE_URL: ${CUSTOMER_API_BASE_URL}
       CUSTOMER_API_PATH: ${CUSTOMER_API_PATH}
+      TZ: America/Guayaquil
+      JAVA_TOOL_OPTIONS: -Duser.timezone=America/Guayaquil
     depends_on:
       db:
         condition: service_healthy

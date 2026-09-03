@@ -2,26 +2,16 @@ package com.lisdev.customer.domain.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import lombok.Getter;
 
 @Getter
-public class Customer {
+public class Customer extends Person {
 
     private Integer id;
-    private String identification;
-    private String firstName;
-    private String lastName;
     private String password;
-    private String gender;
-    private LocalDate birthdate;
-    private String address;
-    private String phoneNumber;
     private Boolean status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String createdBy;
-    private String updatedBy;
+
+    private Customer() {}
 
     public static Customer createNew(
             String identification,
@@ -32,13 +22,8 @@ public class Customer {
             String address,
             String phoneNumber) {
         Customer customer = new Customer();
-        customer.identification = identification;
-        customer.firstName = firstName;
-        customer.lastName = lastName;
-        customer.gender = gender;
-        customer.birthdate = birthdate;
-        customer.address = address;
-        customer.phoneNumber = phoneNumber;
+        customer.assignPersonalData(
+                identification, firstName, lastName, gender, birthdate, address, phoneNumber);
         customer.status = true;
         customer.createdAt = LocalDateTime.now();
         customer.createdBy = identification;
@@ -47,6 +32,7 @@ public class Customer {
 
     public static Customer rehydrate(
             Integer id,
+            Integer personId,
             String identification,
             String firstName,
             String lastName,
@@ -62,14 +48,10 @@ public class Customer {
             String updatedBy) {
         Customer customer = new Customer();
         customer.id = id;
-        customer.identification = identification;
-        customer.firstName = firstName;
-        customer.lastName = lastName;
+        customer.personId = personId;
+        customer.assignPersonalData(
+                identification, firstName, lastName, gender, birthdate, address, phoneNumber);
         customer.password = password;
-        customer.gender = gender;
-        customer.birthdate = birthdate;
-        customer.address = address;
-        customer.phoneNumber = phoneNumber;
         customer.status = status;
         customer.createdAt = createdAt;
         customer.updatedAt = updatedAt;
@@ -86,13 +68,8 @@ public class Customer {
             LocalDate birthdate,
             String address,
             String phoneNumber) {
-        this.identification = identification;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.birthdate = birthdate;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
+        assignPersonalData(
+                identification, firstName, lastName, gender, birthdate, address, phoneNumber);
         this.status = true;
         this.updatedAt = LocalDateTime.now();
         this.updatedBy = identification;
@@ -106,13 +83,8 @@ public class Customer {
             LocalDate birthdate,
             String address,
             String phoneNumber) {
-        this.identification = identification;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.birthdate = birthdate;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
+        assignPersonalData(
+                identification, firstName, lastName, gender, birthdate, address, phoneNumber);
         this.updatedBy = identification;
         this.updatedAt = LocalDateTime.now();
     }
@@ -125,13 +97,6 @@ public class Customer {
         this.status = false;
         this.updatedBy = this.createdBy;
         this.updatedAt = LocalDateTime.now();
-    }
-
-    public Integer getAge() {
-        if (birthdate == null) {
-            return null;
-        }
-        return Period.between(birthdate, LocalDate.now()).getYears();
     }
 
 }

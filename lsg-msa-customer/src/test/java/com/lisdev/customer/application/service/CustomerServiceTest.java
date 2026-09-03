@@ -50,6 +50,7 @@ class CustomerServiceTest {
 
     // ── constants ─────────────────────────────────────────────────────────
     private static final int    CUSTOMER_ID     = 100;
+    private static final int    PERSON_ID       = 200;
     private static final String IDENTIFICATION  = "1234567890";
     private static final String PASSWORD        = "secret";
     private static final String ENCODED_PASS    = "ENCODED";
@@ -141,6 +142,7 @@ class CustomerServiceTest {
                     Customer c = inv.getArgument(0);
                     return Mono.just(Customer.rehydrate(
                             42,
+                            PERSON_ID,
                             c.getIdentification(),
                             c.getFirstName(),
                             c.getLastName(),
@@ -291,6 +293,7 @@ class CustomerServiceTest {
     private static Customer customerRehydrated(Integer id, String createdBy, boolean status) {
         return Customer.rehydrate(
                 id,
+                PERSON_ID,
                 IDENTIFICATION,
                 "Juan",
                 "Pérez",

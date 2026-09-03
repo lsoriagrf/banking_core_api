@@ -1,30 +1,36 @@
 package com.lisdev.customer.infrastructure.persistence.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import com.lisdev.customer.domain.model.Customer;
 import com.lisdev.customer.infrastructure.persistence.entity.CustomerEntity;
+import com.lisdev.customer.infrastructure.persistence.entity.PersonEntity;
 
 @Mapper(componentModel = "spring")
 public interface CustomerPersistenceMapper {
 
-    default Customer toDomain(CustomerEntity entity) {
+    default Customer toDomain(CustomerEntity customerEntity, PersonEntity personEntity) {
         return Customer.rehydrate(
-                entity.getId(),
-                entity.getIdentification(),
-                entity.getFirstName(),
-                entity.getLastName(),
-                entity.getPassword(),
-                entity.getGender(),
-                entity.getBirthdate(),
-                entity.getAddress(),
-                entity.getPhoneNumber(),
-                entity.getStatus(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt(),
-                entity.getCreatedBy(),
-                entity.getUpdatedBy());
+                customerEntity.getId(),
+                personEntity.getId(),
+                personEntity.getIdentification(),
+                personEntity.getFirstName(),
+                personEntity.getLastName(),
+                customerEntity.getPassword(),
+                personEntity.getGender(),
+                personEntity.getBirthdate(),
+                personEntity.getAddress(),
+                personEntity.getPhoneNumber(),
+                customerEntity.getStatus(),
+                customerEntity.getCreatedAt(),
+                customerEntity.getUpdatedAt(),
+                customerEntity.getCreatedBy(),
+                customerEntity.getUpdatedBy());
     }
 
-    CustomerEntity toEntity(Customer customer);
+    CustomerEntity toCustomerEntity(Customer customer);
+
+    @Mapping(target = "id", source = "personId")
+    PersonEntity toPersonEntity(Customer customer);
 
 }
