@@ -20,12 +20,12 @@ services:
       timeout: 5s
       retries: 5
 
-  customers-api:
-    build: ./customers_api
+  lsg-msa-customer:
+    build: ./lsg-msa-customer
     ports:
       - "8080:8080"
     environment:
-      SECRET_CONFIG_DB_URL: ${CUSTOMERS_DB_URL}
+      SECRET_CONFIG_DB_URL: ${CUSTOMER_DB_URL}
       SECRET_CONFIG_DB_USERNAME: ${DB_USERNAME}
       SECRET_CONFIG_DB_PASSWORD: ${DB_PASSWORD}
       CONFIG_HTTP_HTTPS_PORT: 8080
@@ -44,8 +44,8 @@ services:
       SECRET_CONFIG_DB_USERNAME: ${DB_USERNAME}
       SECRET_CONFIG_DB_PASSWORD: ${DB_PASSWORD}
       CONFIG_HTTP_HTTPS_PORT: 8081
-      CUSTOMERS_API_BASE_URL: ${CUSTOMERS_API_BASE_URL}
-      CUSTOMERS_API_PATH: ${CUSTOMERS_API_PATH}
+      CUSTOMER_API_BASE_URL: ${CUSTOMER_API_BASE_URL}
+      CUSTOMER_API_PATH: ${CUSTOMER_API_PATH}
     depends_on:
       db:
         condition: service_healthy

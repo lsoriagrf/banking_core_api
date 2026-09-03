@@ -5,7 +5,7 @@
 
 | Service | Port | Description |
 |---|---|---|
-| `customersapi` | `8080` | Customer management |
+| `lsg-msa-customer` | `8080` | Customer management |
 | `lsg-msa-account` | `8081` | Accounts & movements |
 | `postgres` | `5432` | PostgreSQL database |
 
@@ -21,12 +21,12 @@ cp .env.example .env
 |---|---|---|
 | `DB_USERNAME` | Database user | `your_db_user` |
 | `DB_PASSWORD` | Database password | `your_db_password` |
-| `CUSTOMERS_DB_URL` | Customers R2DBC URL | `r2dbc:postgresql://db:5432/customers_db` |
+| `CUSTOMER_DB_URL` | Customers R2DBC URL | `r2dbc:postgresql://db:5432/customers_db` |
 | `ACCOUNT_DB_URL` | Transactions R2DBC URL | `r2dbc:postgresql://db:5432/transactions_db` |
 | `ACCOUNT_API_BASE_URL` | Base URL for the account API | `http://lsg-msa-account:8081` |
 | `ACCOUNT_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check if a customer has active accounts | `/api/v1/accounts/exists?customerId={customerId}` |
-| `CUSTOMERS_API_BASE_URL` | Base URL for the customers API | `http://customers-api:8080` |
-| `CUSTOMERS_API_PATH` | Base path for customers endpoints | `/api/v1/customers` |
+| `CUSTOMER_API_BASE_URL` | Base URL for the customer API | `http://lsg-msa-customer:8080` |
+| `CUSTOMER_API_PATH` | Base path for customers endpoints | `/api/v1/customers` |
 
 
 ## Docker Compose

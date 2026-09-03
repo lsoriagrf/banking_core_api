@@ -19,8 +19,8 @@ cp .env.example .env
 | `SECRET_CONFIG_DB_PASSWORD` | Database password | `admin123` |
 | `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/dbname` |
 | `CONFIG_HTTP_HTTPS_PORT` | HTTP server port | `8081` |
-| `CUSTOMERS_API_BASE_URL` | Customers API base URL | `http://localhost:8080` |
-| `CUSTOMERS_API_PATH` | Customers resource path | `/api/v1/customers` |
+| `CUSTOMER_API_BASE_URL` | Customer API base URL | `http://localhost:8080` |
+| `CUSTOMER_API_PATH` | Customers resource path | `/api/v1/customers` |
 
 ## Running Tests
 ```bash
