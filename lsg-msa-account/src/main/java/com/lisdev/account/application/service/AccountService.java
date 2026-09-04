@@ -7,9 +7,12 @@ import com.lisdev.account.application.mapper.AccountMapper;
 import com.lisdev.account.application.port.in.AccountPortIn;
 import com.lisdev.account.application.port.in.command.CreateAccountCommand;
 import com.lisdev.account.application.port.in.command.FindByAccountNumberCommand;
+import com.lisdev.account.application.port.out.AccountEventPublisherPort;
 import com.lisdev.account.application.port.out.AccountPersistencePort;
 import com.lisdev.account.application.port.out.CustomerPort;
 import com.lisdev.account.common.UseCase;
+import com.lisdev.account.domain.event.AccountEvent;
+import com.lisdev.account.domain.event.AccountEventType;
 import com.lisdev.account.domain.model.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ public class AccountService implements AccountPortIn {
 
     private final AccountPersistencePort accountPersistencePort;
     private final CustomerPort customerPort;
+    private final AccountEventPublisherPort accountEventPublisherPort;
     private final AccountMapper accountMapper;
 
     @Override
@@ -33,6 +37,7 @@ public class AccountService implements AccountPortIn {
                 .switchIfEmpty(Mono.error(new CustomerNotFoundException(body.getIdentification())))
                 .map(customerId -> accountMapper.toCreateAccount(body, customerId))
                 .flatMap(accountPersistencePort::save)
+                .flatMap(saved -> publish(AccountEventType.AccountCreated, saved))
                 .doOnNext(account ->
                         log.info(Messages.END + "createAccount(customerId:{})", account.getCustomerId()));
     }
@@ -57,6 +62,7 @@ public class AccountService implements AccountPortIn {
                     account.updateStatus(status);
                     return accountPersistencePort.save(account);
                 })
+                .flatMap(saved -> publish(AccountEventType.AccountStatusChanged, saved))
                 .doOnNext(account -> log.info(Messages.END + "updateAccountStatus(id:{})", account.getId()));
     }
 
@@ -70,8 +76,9 @@ public class AccountService implements AccountPortIn {
                 		body.getAccountNumber()));
     }
 
-    @Override
-    public Mono<Boolean> existsAccountByCustomerId(Integer customerId) {
-        return accountPersistencePort.existsActiveAccountByCustomerId(customerId);
+    private Mono<Account> publish(AccountEventType eventType, Account account) {
+        return accountEventPublisherPort
+                .publish(AccountEvent.from(eventType, account))
+                .thenReturn(account);
     }
 }

@@ -27,8 +27,10 @@ import com.lisdev.customer.application.port.in.command.CreateCustomerCommand;
 import com.lisdev.customer.application.port.in.command.UpdateCustomerCommand;
 import com.lisdev.customer.application.port.out.AccountRestrictionPort;
 import com.lisdev.customer.application.port.out.CustomerAuditPersistencePort;
+import com.lisdev.customer.application.port.out.CustomerEventPublisherPort;
 import com.lisdev.customer.application.port.out.CustomerPersistencePort;
 import com.lisdev.customer.application.port.out.PasswordEncoderPort;
+import com.lisdev.customer.domain.event.CustomerEvent;
 import com.lisdev.customer.domain.model.CustomerAuditSnapshot;
 import com.lisdev.customer.domain.model.Customer;
 import reactor.core.publisher.Mono;
@@ -41,6 +43,7 @@ class CustomerServiceTest {
     @Mock private CustomerPersistencePort      customerPersistencePort;
     @Mock private CustomerAuditPersistencePort customerAuditPersistencePort;
     @Mock private AccountRestrictionPort       accountRestrictionPort;
+    @Mock private CustomerEventPublisherPort   customerEventPublisherPort;
     @Mock private CustomerMapper               customerMapper;
     @Mock private CustomerAuditMapper          customerAuditMapper;
     @Mock private PasswordEncoderPort          passwordEncoderPort;
@@ -58,6 +61,8 @@ class CustomerServiceTest {
     @BeforeEach
     void setup() {
         lenient().when(customerPersistencePort.findDeletedCustomerByIdentification(anyString()))
+                .thenReturn(Mono.empty());
+        lenient().when(customerEventPublisherPort.publish(any(CustomerEvent.class)))
                 .thenReturn(Mono.empty());
     }
 

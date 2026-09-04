@@ -18,11 +18,6 @@ public class AccountPersistenceAdapter implements AccountPersistencePort {
     private final AccountPersistenceMapper accountPersistenceMapper;
 
     @Override
-    public Mono<Boolean> existsActiveAccountByCustomerId(Integer customerId) {
-        return accountRepository.existsByCustomerIdAndStatusTrue(customerId);
-    }
-
-    @Override
     public Flux<Account> findAccountsByCustomerId(Integer customerId) {
         return accountRepository.findByCustomerId(customerId).map(accountPersistenceMapper::toDomain);
     }

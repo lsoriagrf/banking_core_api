@@ -8,6 +8,8 @@
 | `lsg-msa-customer` | `8080` | Customer management |
 | `lsg-msa-account` | `8081` | Accounts & movements |
 | `postgres` | `5432` | PostgreSQL database |
+| `kafka` | `9092` | Asynchronous messaging |
+| `kafka-ui` | `8088` | Kafka topics UI |
 
 
 ## Environment Variables
@@ -23,10 +25,9 @@ cp .env.example .env
 | `DB_PASSWORD` | Database password | `your_db_password` |
 | `CUSTOMER_DB_URL` | Customers R2DBC URL | `r2dbc:postgresql://db:5432/customers_db` |
 | `ACCOUNT_DB_URL` | Transactions R2DBC URL | `r2dbc:postgresql://db:5432/transactions_db` |
-| `ACCOUNT_API_BASE_URL` | Base URL for the account API | `http://lsg-msa-account:8081` |
-| `ACCOUNT_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check if a customer has active accounts | `/api/v1/accounts/exists?customerId={customerId}` |
-| `CUSTOMER_API_BASE_URL` | Base URL for the customer API | `http://lsg-msa-customer:8080` |
-| `CUSTOMER_API_PATH` | Base path for customers endpoints | `/api/v1/customers` |
+| `KAFKA_BOOTSTRAP_SERVERS` | Kafka broker address | `kafka:9092` |
+| `KAFKA_TOPIC_CUSTOMER_EVENTS` | Topic for customer events | `customer.events` |
+| `KAFKA_TOPIC_ACCOUNT_EVENTS` | Topic for account events | `account.events` |
 
 
 ## Docker Compose

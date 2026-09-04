@@ -14,7 +14,6 @@ import com.lisdev.customer.application.port.in.CustomerPortIn;
 import com.lisdev.customer.common.WebAdapter;
 import com.lisdev.customer.infrastructure.web.dto.request.CreateCustomer;
 import com.lisdev.customer.infrastructure.web.dto.request.Person;
-import com.lisdev.customer.infrastructure.web.dto.response.CustomerResolvedResponse;
 import com.lisdev.customer.infrastructure.web.dto.response.CustomerResponse;
 import com.lisdev.customer.infrastructure.web.mapper.CustomerWebMapper;
 import jakarta.validation.Valid;
@@ -52,15 +51,6 @@ public class CustomerController {
             @PathVariable String identification) {
         return customerPortIn.findCustomerByIdentification(identification)
                 .map(customerWebMapper::toResponse)
-                .map(ResponseEntity::ok);
-    }
-
-    // Gets active customer identification and full name by id.
-    @GetMapping("/id/{id}")
-    public Mono<ResponseEntity<CustomerResolvedResponse>> findActiveCustomerIdentificationAndFullNameById(
-            @PathVariable Integer id) {
-        return customerPortIn.findActiveCustomerIdentificationAndFullNameById(id)
-                .map(customerWebMapper::toResolvedResponse)
                 .map(ResponseEntity::ok);
     }
 

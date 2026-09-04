@@ -19,8 +19,9 @@ cp .env.example .env
 | `SECRET_CONFIG_DB_PASSWORD` | Database password | `admin123` |
 | `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/dbname` |
 | `CONFIG_HTTP_HTTPS_PORT` | HTTP server port | `8080` |
-| `ACCOUNT_API_BASE_URL` | Account API base URL | `http://localhost:8081` |
-| `ACCOUNT_API_EXISTS_ACTIVE_ACCOUNTS_PATH` | Path to check active accounts by customer id | `/api/v1/accounts/exists?customerId={customerId}` |
+| `KAFKA_BOOTSTRAP_SERVERS` | Kafka broker address | `kafka:9092` |
+| `KAFKA_TOPIC_CUSTOMER_EVENTS` | Topic for customer events | `customer.events` |
+| `KAFKA_TOPIC_ACCOUNT_EVENTS` | Topic for account events | `account.events` |
 
 ## Running Tests
 ```bash
@@ -32,7 +33,6 @@ mvn test
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/v1/customers/{identification}` | Get customer by identification |
-| `GET` | `/api/v1/customers/{id}` | Get customer identification and full name by id |
 | `POST` | `/api/v1/customers` | Create customer |
 | `PUT` | `/api/v1/customers/{id}` | Update customer |
 | `DELETE` | `/api/v1/customers/{id}` | Delete customer |

@@ -29,11 +29,24 @@ CREATE TABLE public."customer" (
     FOREIGN KEY (person_id) REFERENCES public.person(id)
 );
 
+CREATE TABLE public.account_projection (
+    account_id      INT          PRIMARY KEY,
+    customer_id     INT          NOT NULL,
+    account_number  VARCHAR(10)  NOT NULL,
+    status          BOOLEAN      NOT NULL DEFAULT TRUE,
+    last_event_id   UUID         NULL,
+    last_event_at   TIMESTAMP    NULL,
+    updated_at      TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_account_projection_customer_status
+    ON public.account_projection (customer_id, status);
+
 -- AUDIT
 
 CREATE SCHEMA audit;
 
-CREATE TABLE audit."customer" (
+CREATE TABLE audit."person_customer" (
     audit_id    SERIAL PRIMARY KEY,
     id          INT,
     identification  VARCHAR(15),
@@ -64,3 +77,11 @@ VALUES
     ('$2a$10$7FJcaRgWMh66J0IZbdzMqeIIr3itkiR.Qi3Qdw3mencNJZOIqoxYq', 1, TRUE, NOW(), 'admin', NULL),
     ('$2a$10$7FJcaRgWMh66J0IZbdzMqeIIr3itkiR.Qi3Qdw3mencNJZOIqoxYq', 2, TRUE, NOW(), 'admin', NULL),
     ('$2a$10$7FJcaRgWMh66J0IZbdzMqeIIr3itkiR.Qi3Qdw3mencNJZOIqoxYq', 3, TRUE, NOW(), 'admin', NULL);
+
+INSERT INTO public.account_projection
+    (account_id, customer_id, account_number, status)
+VALUES
+    (1, 1, '478758', TRUE),
+    (2, 2, '225487', TRUE),
+    (3, 3, '495878', TRUE),
+    (4, 2, '496825', TRUE);

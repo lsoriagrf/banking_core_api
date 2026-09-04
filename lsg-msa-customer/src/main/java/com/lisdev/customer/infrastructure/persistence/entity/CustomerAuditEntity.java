@@ -8,7 +8,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import lombok.Data;
 
 @Data
-@Table(name = "customer", schema = "audit")
+@Table(name = "person_customer", schema = "audit")
 public class CustomerAuditEntity {
 
     @Id

@@ -3,11 +3,9 @@ package com.lisdev.customer.infrastructure.web.mapper;
 import org.mapstruct.Mapper;
 import com.lisdev.customer.application.port.in.command.CreateCustomerCommand;
 import com.lisdev.customer.application.port.in.command.UpdateCustomerCommand;
-import com.lisdev.customer.domain.model.ResolvedActiveCustomer;
 import com.lisdev.customer.domain.model.Customer;
 import com.lisdev.customer.infrastructure.web.dto.request.CreateCustomer;
 import com.lisdev.customer.infrastructure.web.dto.request.Person;
-import com.lisdev.customer.infrastructure.web.dto.response.CustomerResolvedResponse;
 import com.lisdev.customer.infrastructure.web.dto.response.CustomerResponse;
 
 @Mapper(componentModel = "spring")
@@ -18,8 +16,4 @@ public interface CustomerWebMapper {
     UpdateCustomerCommand toUpdateCommand(Integer id, Person dto);
 
     CustomerResponse toResponse(Customer customer);
-
-    default CustomerResolvedResponse toResolvedResponse(ResolvedActiveCustomer resolved) {
-        return new CustomerResolvedResponse(resolved.identification(), resolved.fullName());
-    }
 }

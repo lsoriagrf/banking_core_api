@@ -48,6 +48,19 @@ CREATE TABLE public.movements (
     FOREIGN KEY (transaction_type_id)  REFERENCES public.transaction_type(id)
 );
 
+CREATE TABLE public.customer_projection (
+    customer_id     INT          PRIMARY KEY,
+    identification  VARCHAR(15)  UNIQUE NOT NULL,
+    full_name       VARCHAR(101) NOT NULL,
+    status          BOOLEAN      NOT NULL DEFAULT TRUE,
+    last_event_id   UUID         NULL,
+    last_event_at   TIMESTAMP    NULL,
+    updated_at      TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_customer_projection_identification_status
+    ON public.customer_projection (identification, status);
+
 -- AUDIT
 
 CREATE SCHEMA audit;
@@ -75,6 +88,13 @@ INSERT INTO public.transaction_type (description, created_by)
 VALUES
     ('Deposito', 'admin'),
     ('Retiro',   'admin');
+
+INSERT INTO public.customer_projection
+    (customer_id, identification, full_name, status)
+VALUES
+    (1, '1234567890', 'Jose Lema',           TRUE),
+    (2, '2345678901', 'Marianela Montalvo',  TRUE),
+    (3, '3456789012', 'Juan Osorio',         TRUE);
 
 INSERT INTO public.account (account_number, customer_id, account_type_id, balance, status, created_at, created_by)
 VALUES

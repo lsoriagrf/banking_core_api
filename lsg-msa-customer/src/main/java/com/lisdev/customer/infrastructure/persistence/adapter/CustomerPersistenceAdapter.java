@@ -2,7 +2,6 @@ package com.lisdev.customer.infrastructure.persistence.adapter;
 
 import com.lisdev.customer.application.port.out.CustomerPersistencePort;
 import com.lisdev.customer.common.PersistenceAdapter;
-import com.lisdev.customer.domain.model.ResolvedActiveCustomer;
 import com.lisdev.customer.domain.model.Customer;
 import com.lisdev.customer.infrastructure.persistence.entity.CustomerEntity;
 import com.lisdev.customer.infrastructure.persistence.mapper.CustomerPersistenceMapper;
@@ -38,16 +37,6 @@ public class CustomerPersistenceAdapter implements CustomerPersistencePort {
         return customerRepository.findByIdAndStatusTrue(id)
                 .flatMap(customer -> personRepository.findById(customer.getPersonId())
                         .map(person -> persistenceMapper.toDomain(customer, person)));
-    }
-
-    @Override
-    public Mono<ResolvedActiveCustomer> findActiveCustomerIdentificationAndFullNameById(int id) {
-        return customerRepository.findByIdAndStatusTrue(id)
-                .flatMap(customer -> personRepository.findById(customer.getPersonId()))
-                .map(person -> ResolvedActiveCustomer.fromActive(
-                        person.getIdentification(),
-                        person.getFirstName(),
-                        person.getLastName()));
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.lisdev.account.application.dto.response.AccountResponse;
 import com.lisdev.account.application.port.in.AccountPortIn;
 import com.lisdev.account.common.WebAdapter;
 import com.lisdev.account.infrastructure.web.dto.request.CreateAccount;
-import com.lisdev.account.infrastructure.web.dto.response.ExistsResponse;
 import com.lisdev.account.infrastructure.web.mapper.AccountWebMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -55,14 +54,6 @@ public class AccountController {
                 .updateAccountStatus(id, status)
                 .map(accountWebMapper::toResponse)
                 .map(response -> ResponseEntity.status(HttpStatus.OK).body(response));
-    }
-
-    @GetMapping("/exists")
-    public Mono<ResponseEntity<ExistsResponse>> existsAccountByCustomerId(@RequestParam Integer customerId) {
-        return accountPortIn
-                .existsAccountByCustomerId(customerId)
-                .map(ExistsResponse::new)
-                .map(ResponseEntity::ok);
     }
 
 }

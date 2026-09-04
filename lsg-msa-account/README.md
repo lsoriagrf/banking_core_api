@@ -19,8 +19,9 @@ cp .env.example .env
 | `SECRET_CONFIG_DB_PASSWORD` | Database password | `admin123` |
 | `SECRET_CONFIG_DB_URL` | R2DBC connection URL | `r2dbc:postgresql://db:5432/dbname` |
 | `CONFIG_HTTP_HTTPS_PORT` | HTTP server port | `8081` |
-| `CUSTOMER_API_BASE_URL` | Customer API base URL | `http://localhost:8080` |
-| `CUSTOMER_API_PATH` | Customers resource path | `/api/v1/customers` |
+| `KAFKA_BOOTSTRAP_SERVERS` | Kafka broker address | `kafka:9092` |
+| `KAFKA_TOPIC_CUSTOMER_EVENTS` | Topic for customer events | `customer.events` |
+| `KAFKA_TOPIC_ACCOUNT_EVENTS` | Topic for account events | `account.events` |
 
 ## Running Tests
 ```bash

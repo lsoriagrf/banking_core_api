@@ -8,8 +8,6 @@ import reactor.core.publisher.Mono;
 
 public interface AccountPortIn {
 
-    Mono<Boolean> existsAccountByCustomerId(Integer customerId);
-
     Mono<Account> createAccount(CreateAccountCommand body);
 
     Flux<Account> findAccountsByIdentification(String identification);

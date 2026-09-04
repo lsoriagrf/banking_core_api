@@ -6,8 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface AccountPersistencePort {
 
-    Mono<Boolean> existsActiveAccountByCustomerId(Integer customerId);
-
     Flux<Account> findAccountsByCustomerId(Integer customerId);
 
     Mono<Account> findActiveAccountByAccountNumber(String accountNumber);
