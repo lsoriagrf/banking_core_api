@@ -6,7 +6,6 @@ import com.lisdev.account.domain.exception.CustomerNotFoundException;
 import com.lisdev.account.application.mapper.AccountMapper;
 import com.lisdev.account.application.port.in.AccountPortIn;
 import com.lisdev.account.application.port.in.command.CreateAccountCommand;
-import com.lisdev.account.application.port.in.command.FindByAccountNumberCommand;
 import com.lisdev.account.application.port.out.AccountEventPublisherPort;
 import com.lisdev.account.application.port.out.AccountPersistencePort;
 import com.lisdev.account.application.port.out.CustomerPort;
@@ -33,9 +32,10 @@ public class AccountService implements AccountPortIn {
     public Mono<Account> createAccount(CreateAccountCommand body) {
         log.info(Messages.START + "createAccount(body:{})", body);
         return customerPort
-                .findIdByIdentification(body.getIdentification())
-                .switchIfEmpty(Mono.error(new CustomerNotFoundException(body.getIdentification())))
-                .map(customerId -> accountMapper.toCreateAccount(body, customerId))
+                .resolveCustomerIdentityById(body.getCustomerId())
+                .filter(identity -> identity.isPresent())
+                .switchIfEmpty(Mono.error(new CustomerNotFoundException(body.getCustomerId())))
+                .map(identity -> accountMapper.toCreateAccount(body, identity.identification()))
                 .flatMap(accountPersistencePort::save)
                 .flatMap(saved -> publish(AccountEventType.AccountCreated, saved))
                 .doOnNext(account ->
@@ -64,16 +64,6 @@ public class AccountService implements AccountPortIn {
                 })
                 .flatMap(saved -> publish(AccountEventType.AccountStatusChanged, saved))
                 .doOnNext(account -> log.info(Messages.END + "updateAccountStatus(id:{})", account.getId()));
-    }
-
-    @Override
-    public Mono<Account> findByAccountNumber(FindByAccountNumberCommand body) {
-        log.info(Messages.START + "findByAccountNumber(accountNumber:{})", body.getAccountNumber());
-        return accountPersistencePort
-                .findActiveAccountByAccountNumber(body.getAccountNumber())
-                .switchIfEmpty(Mono.error(new AccountNotFoundException()))
-                .doOnNext(account -> log.info(Messages.END + "findByAccountNumber(accountNumber:{})", 
-                		body.getAccountNumber()));
     }
 
     private Mono<Account> publish(AccountEventType eventType, Account account) {

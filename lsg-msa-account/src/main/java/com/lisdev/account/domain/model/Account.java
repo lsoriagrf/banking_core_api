@@ -27,7 +27,7 @@ public class Account {
 
     public static String generateAccountNumber() {
         return String.valueOf(
-                Math.abs(UUID.randomUUID().getMostSignificantBits() % 9_000_000_000L) + 1_000_000_000L);
+                Math.abs(UUID.randomUUID().getMostSignificantBits() % 900_000L) + 100_000L);
     }
 
     public static Account createNew(

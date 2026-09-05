@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class CreateAccountCommand {
 
-    private String identification;
+    private Integer customerId;
     private Integer accountTypeId;
     private BigDecimal balance;
 

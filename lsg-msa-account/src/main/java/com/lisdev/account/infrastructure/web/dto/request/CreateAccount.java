@@ -3,14 +3,15 @@ package com.lisdev.account.infrastructure.web.dto.request;
 import java.math.BigDecimal;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-@EqualsAndHashCode(callSuper = true)
-public class CreateAccount extends FindByIdentification {
+public class CreateAccount {
+
+    @NotNull(message = "Customer id is required")
+    private Integer customerId;
 
     @NotNull(message = "Account type id is required")
     private Integer accountTypeId;

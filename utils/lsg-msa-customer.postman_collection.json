@@ -155,101 +155,6 @@
       ]
     },
     {
-      "name": "customerIdentificationAndFullname",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "auth": {
-          "type": "noauth"
-        },
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "localhost:8080/api/v1/customers/id/{{id}}",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "v1",
-            "customers",
-            "id",
-            "{{id}}"
-          ]
-        }
-      },
-      "response": [
-        {
-          "name": "OK",
-          "originalRequest": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "localhost:8080/api/v1/customers/id/{{id}}",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
-                "v1",
-                "customers",
-                "id",
-                "{{id}}"
-              ]
-            }
-          },
-          "status": "OK",
-          "code": 200,
-          "_postman_previewlanguage": null,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            },
-            {
-              "key": "Content-Length",
-              "value": "54"
-            }
-          ],
-          "cookie": [],
-          "body": "{\n    \"identification\": \"1234567890\",\n    \"fullName\": \"Jose Lema\"\n}"
-        }
-      ]
-    },
-    {
       "name": "createCustomer",
       "request": {
         "auth": {
@@ -259,7 +164,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"identification\": \"7896541236\",\r\n  \"firstName\": \"Paul\",\r\n  \"lastName\": \"Lopez\",\r\n  \"gender\": \"M\",\r\n  \"birthdate\": \"1999-03-18\",\r\n  \"address\": \"Calle 10 de Agosto y Colón, Quito, Ecuador\",\r\n  \"phoneNumber\": \"0998745125\",\r\n  \"password\": \"123transaction\"\r\n}\r\n",
+          "raw": "{\r\n  \"identification\": \"2100104435\",\r\n  \"firstName\": \"Rodrigo\",\r\n  \"lastName\": \"Soria\",\r\n  \"gender\": \"F\",\r\n  \"birthdate\": \"1999-08-11\",\r\n  \"address\": \"Calle 10 de Agosto y Colón, Quito, Ecuador\",\r\n  \"phoneNumber\": \"0960517675\",\r\n  \"password\": \"123transaction\"\r\n}\r\n",
           "options": {
             "raw": {
               "language": "json"
@@ -335,7 +240,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"identification\": \"7896541236\",\r\n    \"firstName\": \"Jhon Paul\",\r\n    \"lastName\": \"Vicente Maldonado\",\r\n    \"gender\": \"M\",\r\n    \"birthdate\": \"2000-03-19\",\r\n    \"address\": \"La carolina y holanda\",\r\n    \"phoneNumber\": \"7854125663\"\r\n  }",
+          "raw": "{\r\n    \"identification\": \"7896541236\",\r\n    \"firstName\": \"Israel Paul\",\r\n    \"lastName\": \"Vicente Maldonado\",\r\n    \"gender\": \"M\",\r\n    \"birthdate\": \"2000-03-19\",\r\n    \"address\": \"La carolina y holanda\",\r\n    \"phoneNumber\": \"7854125663\"\r\n  }",
           "options": {
             "raw": {
               "language": "json"

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountMapper {
 
-    public Account toCreateAccount(CreateAccountCommand body, Integer customerId) {
+    public Account toCreateAccount(CreateAccountCommand body, String createdBy) {
         return Account.createNew(
-                customerId,
+                body.getCustomerId(),
                 body.getAccountTypeId(),
                 body.getBalance(),
-                body.getIdentification());
+                createdBy);
     }
 }

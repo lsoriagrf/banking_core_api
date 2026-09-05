@@ -135,99 +135,6 @@
           ]
         },
         {
-          "name": "existsAccountByCustomerId",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "localhost:8081/api/v1/accounts/exists?customerId={{id}}",
-              "host": [
-                "localhost"
-              ],
-              "port": "8081",
-              "path": [
-                "api",
-                "v1",
-                "accounts",
-                "exists"
-              ],
-              "query": [
-                {
-                  "key": "customerId",
-                  "value": "{{id}}"
-                }
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "ok",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "localhost:8081/api/v1/accounts/exists?customerId=3",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "v1",
-                    "accounts",
-                    "exists"
-                  ],
-                  "query": [
-                    {
-                      "key": "customerId",
-                      "value": "3"
-                    }
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Content-Length",
-                  "value": "15"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"exists\": true\n}"
-            }
-          ]
-        },
-        {
           "name": "createAccount",
           "request": {
             "auth": {
@@ -237,7 +144,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"identification\": \"3456789012\",\r\n  \"accountTypeId\": 2,\r\n  \"balance\": 60\r\n}\r\n",
+              "raw": "{\r\n  \"customerId\": 6,\r\n  \"accountTypeId\": 1,\r\n  \"balance\": 0\r\n}\r\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -259,13 +166,56 @@
           },
           "response": [
             {
+              "name": "OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"customerId\": 6,\r\n  \"accountTypeId\": 1,\r\n  \"balance\": 0\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:8081/api/v1/accounts",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8081",
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "118"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"accountNumber\": \"712711\",\n    \"accountType\": \"Corriente\",\n    \"accountTypeId\": 1,\n    \"balance\": 0,\n    \"customerId\": 6,\n    \"id\": 8,\n    \"status\": true\n}"
+            },
+            {
               "name": "ERROR",
               "originalRequest": {
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"identification\": \"097642\",\r\n  \"accountTypeId\": 2,\r\n  \"balance\": 60\r\n}\r\n",
+                  "raw": "{\r\n  \"customerId\": 97642,\r\n  \"accountTypeId\": 2,\r\n  \"balance\": 60\r\n}\r\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -300,49 +250,6 @@
               ],
               "cookie": [],
               "body": "{\n    \"detail\": \"Customer not found with identification:097642\",\n    \"instance\": \"/api/v1/accounts\",\n    \"status\": 404,\n    \"title\": \"Not Found\"\n}"
-            },
-            {
-              "name": "OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"identification\": \"3456789012\",\r\n  \"accountTypeId\": 2,\r\n  \"balance\": 60\r\n}\r\n",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "localhost:8081/api/v1/accounts",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8081",
-                  "path": [
-                    "api",
-                    "v1",
-                    "accounts"
-                  ]
-                }
-              },
-              "status": "Created",
-              "code": 201,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Content-Length",
-                  "value": "121"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"accountNumber\": \"9689033335\",\n    \"accountType\": \"Ahorros\",\n    \"accountTypeId\": 2,\n    \"balance\": 60,\n    \"customerId\": 3,\n    \"id\": 6,\n    \"status\": true\n}"
             }
           ]
         },
@@ -462,20 +369,13 @@
       "name": "movements",
       "item": [
         {
-          "name": "reportMovements",
+          "name": "movementsReport",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
           "request": {
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMzQ1Njc4OTAxIiwiaWF0IjoxNzc3MzcyMzUyLCJleHAiOjE3NzczNzU5NTJ9.W8x2NCO_DqBSzAjQA2wrOcS0kuRw_n8oFBFH5yBC_mY",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
             "method": "GET",
             "header": [],
@@ -489,7 +389,7 @@
               }
             },
             "url": {
-              "raw": "localhost:8081/api/v1/reports/3?startDate=2026-05-05&endDate=2026-05-05",
+              "raw": "localhost:8081/api/v1/reports/1?startDate=2026-09-04&endDate=2026-09-04",
               "host": [
                 "localhost"
               ],
@@ -498,16 +398,16 @@
                 "api",
                 "v1",
                 "reports",
-                "3"
+                "1"
               ],
               "query": [
                 {
                   "key": "startDate",
-                  "value": "2026-05-05"
+                  "value": "2026-09-04"
                 },
                 {
                   "key": "endDate",
-                  "value": "2026-05-05"
+                  "value": "2026-09-04"
                 }
               ]
             }
@@ -756,20 +656,13 @@
           "name": "deposit",
           "request": {
             "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMzQ1Njc4OTAxIiwiaWF0IjoxNzc3MzcyMzUyLCJleHAiOjE3NzczNzU5NTJ9.W8x2NCO_DqBSzAjQA2wrOcS0kuRw_n8oFBFH5yBC_mY",
-                  "type": "string"
-                }
-              ]
+              "type": "noauth"
             },
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"identification\": \"2345678901\",\r\n  \"accountNumber\": \"4494376133\",\r\n  \"amount\": 3\r\n}\r\n",
+              "raw": "{\r\n  \"identification\": \"7896541236\",\r\n  \"accountNumber\": \"7662227243\",\r\n  \"amount\": 3\r\n}\r\n",
               "options": {
                 "raw": {
                   "language": "json"
